@@ -109,7 +109,7 @@ void rgb_matrix_indicators_user(void) {
     #ifdef RGB_MATRIX_ENABLE
     if (host_keyboard_leds() & (1<<USB_LED_CAPS_LOCK)) {
         for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
-            rgb_matrix_set_color(i, 220, 220, 220);
+            rgb_matrix_set_color(i, 150, 150, 150);
         }
     }
     #endif
@@ -261,7 +261,7 @@ void render_logo(void) {
         0xa0, 0xa1, 0xa2, 0xa3, 0xa4,
         0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0};
     oled_write_P(corne_logo, false);
-    oled_write_P(PSTR("oscar"), false);
+    oled_write_P(PSTR("corne"), false);
 }
 
 void render_layer_state(void) {
@@ -303,11 +303,11 @@ void render_status_main(void) {
 
 void render_status_secondary(void) {
     render_logo();
-    // render_space();
-    // render_layer_state();
-    // render_space();
-    // render_mod_status_gui_alt(get_mods()|get_oneshot_mods());
-    // render_mod_status_ctrl_shift(get_mods()|get_oneshot_mods());
+    render_space();
+    render_layer_state();
+    render_space();
+    render_mod_status_gui_alt(get_mods()|get_oneshot_mods());
+    render_mod_status_ctrl_shift(get_mods()|get_oneshot_mods());
 }
 
 void oled_task_user(void) {
