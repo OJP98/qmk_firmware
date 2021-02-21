@@ -36,13 +36,6 @@ enum custom_keycodes {
   MACRO1
 };
 
-enum {
-    TD_PC,
-    TD_COMI,
-    TD_SLA,
-    TD_CAPLOCK
-};
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         [_QWERTY] = LAYOUT(
   //|-----------------------------------------------------|                    |-----------------------------------------------------|
@@ -70,11 +63,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
         [_RAISE] = LAYOUT(
   //|-----------------------------------------------------|                    |-----------------------------------------------------|
-     KC_GRV,   KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC,
+     KC_GRV,  KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
      KC_CAPS, KC_NO,   KC_BRID, KC_BRIU, KC_NO,   KC_NO,                        KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS, KC_GRV,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-     KC_LSFT, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,                        KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD, 
+     KC_LSFT, KC_BTN2, KC_NO,   KC_NO,   KC_NO,   KC_NO,                        KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD, 
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
                                 KC_LGUI, MO(3),   KC_SPC,                       KC_ENT,  KC_TRNS, KC_RALT
                                       //|--------------------------|  |--------------------------|
@@ -82,7 +75,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
         [_ADJUST] = LAYOUT(
   //|-----------------------------------------------------|                    |-----------------------------------------------------|
-     RGB_TOG, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,                        KC_NO,   KC_NO,   KC_NO,   KC_NO,   EEP_RST, RESET,
+     RGB_TOG, RGBRST,   KC_NO,   KC_NO,   KC_NO,   KC_NO,                        KC_NO,   KC_NO,   KC_NO,   KC_NO,   EEP_RST, RESET,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
      RGB_MOD, RGB_HUI, RGB_SAI, RGB_VAI, KC_NO,   KC_NO,                        KC_MAIL, KC_CALC, KC_MYCM, KC_NO,   KC_SLEP, KC_PWR,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -113,17 +106,13 @@ void matrix_init_user(void) {
 }
 
 void rgb_matrix_indicators_user(void) {
-  #ifdef RGB_MATRIX_ENABLE
-  switch (biton32(layer_state)) {
-    default:
-        if (host_keyboard_leds() & (1<<USB_LED_CAPS_LOCK)) {
-            for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
-                rgb_matrix_set_color(i, 255, 255, 255);
-            }
+    #ifdef RGB_MATRIX_ENABLE
+    if (host_keyboard_leds() & (1<<USB_LED_CAPS_LOCK)) {
+        for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
+            rgb_matrix_set_color(i, 220, 220, 220);
         }
-      break;
-  }
-  #endif
+    }
+    #endif
 }
 
 #ifdef OLED_DRIVER_ENABLE
@@ -272,7 +261,7 @@ void render_logo(void) {
         0xa0, 0xa1, 0xa2, 0xa3, 0xa4,
         0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0};
     oled_write_P(corne_logo, false);
-    oled_write_P(PSTR("corne"), false);
+    oled_write_P(PSTR("oscar"), false);
 }
 
 void render_layer_state(void) {
@@ -314,11 +303,11 @@ void render_status_main(void) {
 
 void render_status_secondary(void) {
     render_logo();
-    render_space();
-    render_layer_state();
-    render_space();
-    render_mod_status_gui_alt(get_mods()|get_oneshot_mods());
-    render_mod_status_ctrl_shift(get_mods()|get_oneshot_mods());
+    // render_space();
+    // render_layer_state();
+    // render_space();
+    // render_mod_status_gui_alt(get_mods()|get_oneshot_mods());
+    // render_mod_status_ctrl_shift(get_mods()|get_oneshot_mods());
 }
 
 void oled_task_user(void) {
@@ -331,6 +320,7 @@ void oled_task_user(void) {
 #endif
 
     if (is_master) {
+
         render_status_main();  // Renders the current keyboard state (layer, lock, caps, scroll, etc)
     } else {
         render_status_secondary();
@@ -372,7 +362,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           layer_off(_ADJUST);
         }
         return false;
-         case MACRO1:
+    case MACRO1:
     if (record->event.pressed) {
             SEND_STRING("Oscar Esteban Juárez Paz\nCuenta Monetaria\nBanco Industrial\nNúmero de cuenta: 2130006238\nEmail: ojuarez_p@hotmail.com\n");
         } else {
