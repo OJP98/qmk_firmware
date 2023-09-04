@@ -1,0 +1,10 @@
+NKRO_ENABLE = yes
+OLED_ENABLE = yes
+WPM_ENABLE = yes
+
+# rgb
+RGBLIGHT_ENABLE = no
+RGB_MATRIX_ENABLE = yes
+
+# encoder
+ENCODER_MAP_ENABLE = yes
