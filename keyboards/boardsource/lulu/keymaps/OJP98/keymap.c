@@ -132,7 +132,7 @@ static const char PROGMEM mac_logo[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 
 /* settings */
 #    define MIN_WALK_SPEED      10
-#    define MIN_RUN_SPEED       40
+#    define MIN_RUN_SPEED       80
 
 /* advanced settings */
 #    define ANIM_FRAME_DURATION 200  // how long each frame lasts in ms
